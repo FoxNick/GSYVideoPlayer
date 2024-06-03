@@ -19,6 +19,8 @@ import com.google.android.exoplayer2.util.Assertions;
 import com.google.android.exoplayer2.util.Log;
 import com.google.android.exoplayer2.util.Predicate;
 import com.google.android.exoplayer2.util.Util;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -268,7 +270,7 @@ public class GSYExoHttpDataSource extends BaseDataSource implements HttpDataSour
     }
 
     private HttpURLConnection makeConnection(DataSpec dataSpec) throws IOException {
-        URL url = new URL(dataSpec.uri.toString());
+        URL url = Urls.create(dataSpec.uri.toString(), Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
         int httpMethod = dataSpec.httpMethod;
         byte[] httpBody = dataSpec.httpBody;
         long position = dataSpec.position;
@@ -409,7 +411,7 @@ public class GSYExoHttpDataSource extends BaseDataSource implements HttpDataSour
         if (location == null) {
             throw new ProtocolException("Null location redirect");
         } else {
-            URL url = new URL(originalUrl, location);
+            URL url = Urls.create(originalUrl, location, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
             String protocol = url.getProtocol();
             if (!"https".equals(protocol) && !"http".equals(protocol)) {
                 throw new ProtocolException("Unsupported protocol redirect: " + protocol);
