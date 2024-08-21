@@ -15,6 +15,7 @@ import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
 import com.shuyu.gsyvideoplayer.utils.Debuger;
 import com.shuyu.gsyvideoplayer.video.base.GSYBaseVideoPlayer;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
+import io.github.pixee.security.BoundedLineReader;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -283,7 +284,7 @@ public class DanmakuVideoPlayer extends StandardGSYVideoPlayer {
             StringBuilder sb1 = new StringBuilder();
             sb1.append("<i>");
             //分行读取
-            while ((line = buffreader.readLine()) != null) {
+            while ((line = BoundedLineReader.readLine(buffreader, 5_000_000)) != null) {
                 sb1.append(line);
             }
             sb1.append("</i>");
