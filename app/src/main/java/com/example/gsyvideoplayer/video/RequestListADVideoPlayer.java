@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.util.AttributeSet;
 
 import com.shuyu.gsyvideoplayer.GSYVideoADManager;
+import java.security.SecureRandom;
 
 import java.util.Random;
 
@@ -30,7 +31,7 @@ public class RequestListADVideoPlayer extends ListADVideoPlayer {
             public void run() {
                 int min = 1;
                 int max = 10;
-                Random random = new Random();
+                Random random = new SecureRandom();
                 int i = random.nextInt(max) % (max - min + 1) + min;
                 if (i % 3 == 0) {
                     mOriginUrl = "http://wdquan-space.b0.upaiyun.com/VIDEO/2018/11/22/ae0645396048_hls_time10.m3u8";
