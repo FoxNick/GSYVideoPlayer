@@ -6,6 +6,8 @@ import com.danikula.videocache.headers.EmptyHeadersInjector;
 import com.danikula.videocache.headers.HeaderInjector;
 import com.danikula.videocache.sourcestorage.SourceInfoStorage;
 import com.danikula.videocache.sourcestorage.SourceInfoStorageFactory;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 
 
 import java.io.BufferedInputStream;
@@ -152,7 +154,7 @@ public class HttpUrlSource implements Source {
         int redirectCount = 0;
         String url = this.sourceInfo.url;
         do {
-            connection = (HttpURLConnection) new URL(url).openConnection();
+            connection = (HttpURLConnection) Urls.create(url, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS).openConnection();
             injectCustomHeaders(connection, url);
             if (offset > 0) {
                 connection.setRequestProperty("Range", "bytes=" + offset + "-");
